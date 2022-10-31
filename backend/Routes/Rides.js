@@ -6,7 +6,6 @@ import RideRequest from "../Models/RideRequest.js";
 const Router = express.Router();
 
 Router.post("/addrequest", AccessTokenVerifier, (req, res) => {
-  console.log("request");
   const {
     rideID,
     userID,
@@ -50,7 +49,6 @@ Router.post("/deleterequest", AccessTokenVerifier, async (req, res) => {
     const data = await RideRequest.deleteOne({ _id: id });
     res.status(200).json({ message: "Request Deleted Successfully" });
   } catch (error) {
-    console.log(error);
     res.send("error");
   }
 });
@@ -69,7 +67,6 @@ Router.post("/acceptrequest", AccessTokenVerifier, async (req, res) => {
    const {userID , rideID}  = req.body;
     try {
         const data = await RideRequest.updateOne({_id:rideID, ownerID:userID},{$set:{status:true}});
-        console.log(data)
         res.status(200).json({message:"Request Accepted Successfully"});
     }
     catch(error){
@@ -159,7 +156,6 @@ Router.post("/addride", AccessTokenVerifier, async (req, res) => {
     color,
     name,
   } = req.body;
-  console.log(req.body);
   const newRide = new Rides({
     userID,
     price,
@@ -179,7 +175,6 @@ Router.post("/addride", AccessTokenVerifier, async (req, res) => {
       message: "ride added",
     });
   } catch (e) {
-    console.log(e.message);
     res.status(400).json({
       error: "error occured",
     });

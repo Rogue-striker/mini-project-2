@@ -31,7 +31,6 @@ Router.post("/register", (req, res) => {
           email,
           password: hashedPassword,
         });
-        console.log(newUser)
         newUser
           .save()
           .then(() => {
@@ -40,7 +39,6 @@ Router.post("/register", (req, res) => {
             });
           })
           .catch((e) => {
-            console.log(e);
             res.status(400).json({
               error: "error in processing",
             });
@@ -89,7 +87,6 @@ Router.post("/login", (req, res) => {
 
 Router.post("/user", (req,res)=>{
   const {id} = req.body;
-  console.log("id", id)
   User.findOne({_id : id}, (err, user)=>{
     if(err){
       res.status(400).json({
@@ -105,6 +102,16 @@ Router.post("/user", (req,res)=>{
   })
 })
 
+Router.post("/getphonenumber", async(req, res)=>{
+  try{
+    const {ownerID}  = req.body;
+    const user = await User.findOne({_id : ownerID});
+    res.status(200).json({phonenumber : user.phonenumber})
+  }catch(error){
+    res.status(400).json({error : "error occured"})
+  }
+})
+
 // * logout router - /auth/logout
 Router.get("/logout", (req, res) => {
   res.status(200).json({
@@ -116,7 +123,6 @@ Router.get("/logout", (req, res) => {
 Router.get("/", (req, res) => {
   User.find({}, (err, result) => {
     if (err) {
-      console.log(err);
       res.send(err);
     } else {
       res.json(result);
@@ -128,7 +134,6 @@ Router.get("/", (req, res) => {
 Router.delete("/delete", (req, res) => {
   User.deleteMany({}, (err, result) => {
     if (err) {
-      console.log(err);
       res.send(err);
     } else {
       res.json(result);
