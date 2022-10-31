@@ -17,7 +17,6 @@ const LoginCard = () => {
     };
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log(loginDetails)
         Axios.post(
             "/auth/login",
             {
@@ -35,7 +34,7 @@ const LoginCard = () => {
             localStorage.setItem('user', JSON.stringify(user))
             Nav("/")
         }).catch((error) => {
-            console.log(error.response.data.error)
+            alert(error.response.data.error)
         })
 
     }

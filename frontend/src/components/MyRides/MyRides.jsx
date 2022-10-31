@@ -11,17 +11,14 @@ const MyRides = () => {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
     }).then((response) => {
-      console.log(response.data)
-      console.log(user._id)
       setRides(response.data)
     })
       .catch((error) => {
-        console.log(error)
+        alert("error getting rides")
       })
   }, [])
   const handleDelete = (e)=>{
     e.preventDefault()
-    console.log(e.target.value)
     Axios.post("/ride/deleteride", {
       rideID : e.target.value
     },{
@@ -29,11 +26,10 @@ const MyRides = () => {
         authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
     }).then((response)=>{
-      console.log(response)
       const newRides = rides.filter((ride)=>ride._id != e.target.value)
       setRides(newRides)
     }).catch((error)=>{
-      console.log(error)
+      alert("error deleting ride")
     })
   }
   return (

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+
 const LandingPage = () => {
   return (
     <>
       <div className='h-screen w-screen absolute top-0 left-0 -z-30'>
+
         <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_znsmxbjo.json" background="transparent" speed="1" loop autoplay></lottie-player>
       </div>
       <div className='grid grid-rows-6 justify-items-center mt-10'>

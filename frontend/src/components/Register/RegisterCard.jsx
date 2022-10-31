@@ -12,19 +12,12 @@ const RegisterCard = () => {
   })
   const handleSignUp = (e) => {
     e.preventDefault();
-    console.log({
-      phonenumber: userDetails.phonenumber,
-      name: userDetails.name,
-      email: userDetails.email,
-      password: userDetails.password,
-    })
     Axios.post("/auth/register", {
       phonenumber: userDetails.phonenumber,
       name: userDetails.name,
       email: userDetails.email,
       password: userDetails.password,
     }).then((response) => {
-      console.log(response)
       setUserDetails({
         phonenumber: '',
         name: '',
@@ -32,9 +25,8 @@ const RegisterCard = () => {
         password: '',
       })
       Nav("/auth/login")
-      console.log("User Registered")
     }).catch((error) => {
-      console.log(error.response.data)
+      alert(error.response.data)
     })
 
   }

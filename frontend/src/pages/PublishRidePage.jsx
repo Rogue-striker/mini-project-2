@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 const PublishRidePage = () => {
   const navigate = useNavigate()
   const [user] = useContext(UserContext)
-  console.log(user)
   const tempDate = new Date();
   const todayDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate()
   const [rideDetails, setRideDetails] = useState({});
@@ -15,12 +14,6 @@ const PublishRidePage = () => {
   }
   const handleRideSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      {
-        ...rideDetails,
-        name: user.name,
-      }
-    )
     Axios.post("/ride/addride", {
       ...rideDetails,
       name: user.name,
@@ -29,15 +22,11 @@ const PublishRidePage = () => {
         'authorization': `Bearer ${localStorage.getItem('accessToken')}`
       }
     }).then((response) => {
-      console.log("published ride")
       navigate("/user/myrides")
-
     }).catch((error) => {
-      console.log(error)
+      alert("error publishing ride")
     })
-
   }
-
   return (
     <div>
       <Navbar />

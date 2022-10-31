@@ -9,15 +9,26 @@ const Requested = () => {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
     }).then((response) => {
-      console.log(response.data.filter((ride) => ride.status === true))
       setRides(response.data)
+      
     })
       .catch((error) => {
-        console.log(error)
+        alert("error fetching data")
       })
   }, [])
   const handleDelete = (e)=>{
-    console.log(e.target.value)
+    Axios.post("/ride/deleterequest", { id: e.target.value }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    }
+    ).then((response)=>{
+      alert("Request deleted")
+      setRides(rides.filter((ride)=>ride._id !== e.target.value))
+    }).catch((error)=>{
+      alert("Error deleting request")
+    })
+
   }
 const handleAccept = (e)=>{
  Axios.post("/ride/acceptrequest",{
@@ -27,7 +38,10 @@ const handleAccept = (e)=>{
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
  }).then((response)=>{
-  console.log(response)
+  alert("Request accepted")
+
+ }).catch((error)=>{
+    alert("error accepting request")
  })
 }
   return (

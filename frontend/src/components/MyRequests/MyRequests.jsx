@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { useEffect } from 'react'
 import Axios from './../../utils/Axios'
 import UserContext from './../../contexts/usercontext'
+import MyRides from '../MyRides/MyRides'
 const MyRequests = () => {
   const [user] = useContext(UserContext)
   const [requests, setRequests] = React.useState([])
@@ -16,7 +17,7 @@ const MyRequests = () => {
         setRequests(response.data)
       })
       .catch((error) => {
-        console.log(error)
+        alert(error.response.data)
       })
 
   }, [])
@@ -31,10 +32,26 @@ const MyRequests = () => {
         setRequests(newRequests)
       })
       .catch((error) => {
-        console.log(error)
+        alert(error.response.data)
       })
   }
-  console.log(requests)
+  const getDetails = (e) => {
+  Axios.post("/auth/getphonenumber", {
+    ownerID: e.target.value
+  }, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  }).then((response) => {
+   console.log(response.data)
+    alert(
+      `Contact Number : ${response.data.phonenumber}` 
+    )
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
   return (
     <div className='flex justify-center flex-col items-center mt-4'>
       {
@@ -74,14 +91,24 @@ const MyRequests = () => {
                 </div>
                 <div className='flex justify-center items-center my-2 text-bold'>
                   {request.status ?
+                    <div className='flex gap-5'>
                     <p className='bg-green-400 text-white rounded-md px-1 py-1 font-bold'>
                       Accepted
                     </p>
+                    <button onClick={getDetails}
+                    className = "bg-black px-1 rounded-md text-white"
+                    value = {request.ownerID}
+                    >
+                       get details
+                    </button>
+                    </div>
                     :
                     <p className=' bg-yellow-500 text-white rounded-md px-1 py-1 font-bold'>
                       Pending
                     </p>
                   }
+
+
                   <div>
                     <button className='bg-red-500 text-white rounded-md px-1 py-1 font-bold ml-2'
                       value={request._id}
@@ -102,5 +129,4 @@ const MyRequests = () => {
     </div>
   )
 }
-
 export default MyRequests

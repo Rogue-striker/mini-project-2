@@ -23,11 +23,10 @@ const homepage = () => {
             date:searchValues.date,
             seats:searchValues.seats
         }).then((response)=>{
-            console.log(response.data)
             const Filterdrides = response.data.rides.filter((ride)=>ride.userID != user._id)
             setRides(Filterdrides)
         }).catch((error)=>{
-            console.log(error)
+            alert("error searching rides")
         })
     }
 

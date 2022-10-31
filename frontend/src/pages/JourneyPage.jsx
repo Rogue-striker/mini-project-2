@@ -16,8 +16,8 @@ const JourneyPage = () => {
             rideID: id,
         }).then((response) => {
             setRideDetails(response.data.ride)
-        }).catch((e) => {
-            console.log(e)
+        }).catch((error) => {
+            alert("error getting ride")
         })
     }, [])
     const handleRequest = (e) => {
@@ -39,11 +39,9 @@ const JourneyPage = () => {
             }
         }
         ).then((response) => {
-            console.log(response)
-            navigate("/user/myrequests")
-            console.log("/user/requested")
+        navigate("/user/myrequests")
         }).catch((e) => {
-            console.log(e)
+            alert("error requesting ride")
         })
     }
     return (
