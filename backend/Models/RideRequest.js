@@ -25,7 +25,7 @@ const RideRequestSchema = new Mongoose.Schema({
         type : String,
         required : true, 
     },
-    date : {
+    date : {    
         type : String,
         required : true,
     },

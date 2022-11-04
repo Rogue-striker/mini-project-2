@@ -8,7 +8,7 @@ const Router = express.Router();
 Router.post("/register", (req, res) => {
   const { name, email, password, phonenumber } = req.body;
   if (!name || !email || !password || !phonenumber) {
-    res.status(409).json({
+    res.status(401).json({
       error: "empty data fields",
     });
   } else {
@@ -19,7 +19,7 @@ Router.post("/register", (req, res) => {
         });
       } else if (result) {
         res.status(409).json({
-          error: "user already exists please try again",
+          error: "User Already Exists Please Login",
         });
       } else {
         const saltrounds = 10
@@ -43,8 +43,8 @@ Router.post("/register", (req, res) => {
               error: "error in processing",
             });
           });
-        }
       }
+    }
     );
   }
 });
@@ -66,7 +66,7 @@ Router.post("/login", (req, res) => {
         const AccessToken = AccessTokenGenerator(user._id);
         if (isMatch) {
           res.status(200).json({
-            'user' : user,          
+            'user': user,
             'success': "login successful",
             'accessToken': AccessToken,
           });
@@ -77,7 +77,7 @@ Router.post("/login", (req, res) => {
         }
       }).catch((e) => {
         res.status(400).json({
-          error : "error occured"
+          error: "error occured"
         })
       })
 
@@ -85,30 +85,40 @@ Router.post("/login", (req, res) => {
   });
 });
 
-Router.post("/user", (req,res)=>{
-  const {id} = req.body;
-  User.findOne({_id : id}, (err, user)=>{
-    if(err){
+Router.post("/user", (req, res) => {
+  const { id } = req.body;
+  User.findOne({ _id: id }, (err, user) => {
+    if (err) {
       res.status(400).json({
-        error : "error occured"
+        error: "error occured"
       })
-    }else if(!user){
+    } else if (!user) {
       res.status(400).json({
-        error : "user not found"
+        error: "user not found"
       })
-    }else{
-      res.status(200).json({user})
+    } else {
+      res.status(200).json({ user })
     }
   })
 })
 
-Router.post("/getphonenumber", async(req, res)=>{
-  try{
-    const {ownerID}  = req.body;
-    const user = await User.findOne({_id : ownerID});
-    res.status(200).json({phonenumber : user.phonenumber})
-  }catch(error){
-    res.status(400).json({error : "error occured"})
+Router.post("/getDetails", async (req, res) => {
+  try {
+    const { ownerID } = req.body;
+    const user = await User.findOne({
+      _id: ownerID
+    });
+    if (user == null) {
+      res.status(404).json({
+        error: "user not found"
+      })
+    }
+    else {
+      res.status(200).json({ name : user.name, phonenumber : user.phonenumber, email : user.email })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error: "error occured" })
   }
 })
 

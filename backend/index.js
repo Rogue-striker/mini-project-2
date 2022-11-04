@@ -7,8 +7,8 @@ import RideRoute from "./Routes/Rides.js";
 dotenv.config();
 const app = express();
 
-mongoose.connect(process.env.MONGO_URL, () => {
-  console.log("connected to mongo db  ");
+mongoose.connect(process.env.MONGO, () => {
+  console.log("connected to mongo db");
 });
 
 app.use(express.json());
